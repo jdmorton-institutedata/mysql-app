@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 require("dotenv").config();
 require("./config/database");
@@ -7,6 +9,8 @@ require("./models");
 
 // parse requests of content-type - application / json;
 app.use(express.json());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true}));
 
 // add user routes
 app.use("/users", require("./routes/userRoutes"));
