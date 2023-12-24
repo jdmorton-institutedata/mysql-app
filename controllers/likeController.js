@@ -1,6 +1,9 @@
 const Like = require('../models/like');
 
 // finds all likes in DB, then sends array as response
+/**
+ * @param {object} res - response object
+ */
 const getLikes = (res) => {
     Like.findAll({})
         .then((data) => {
@@ -13,6 +16,10 @@ const getLikes = (res) => {
 };
 
 // get single like
+/**
+ * @param {number} id - like id
+ * @param {object} res - response object
+ */
 const getLike = (id, res) => {
     Like.findOne({ where: { id: id } })
         .then((data) => {
@@ -25,6 +32,10 @@ const getLike = (id, res) => {
 };
 
 // get likes by post ID
+/**
+ * @param {number} id - post id
+ * @param {object} res - response object
+ */
 const getLikesByPost = (id, res) => {
     Like.findAll({ where: { postId: id } })
         .then((data) => {
@@ -38,6 +49,10 @@ const getLikesByPost = (id, res) => {
 };
 
 // get likes by user ID
+/**
+ * @param {number} id - user id
+ * @param {object} res - response object
+ */
 const getLikesByUser = (id, res) => {
     Like.findAll({ where: { userId: id } })
         .then((data) => {
@@ -51,6 +66,10 @@ const getLikesByUser = (id, res) => {
 };
 
 // uses JSON from request body to create new like in DB
+/**
+ * @param {object} data - like data
+ * @param {object} res - response object
+ */
 const createLike = (data, res) => {
     Like.create(data)
         .then((data) => {
@@ -63,6 +82,11 @@ const createLike = (data, res) => {
 };
 
 // update like in DB based on ID
+/**
+ * @param {number} id - like id
+ * @param {object} data - like data
+ * @param {object} res - response object
+ */
 const updateLike = (id, data, res) => {
     Like.update(data, { where: { id: id } })
         .then((data) => {
@@ -75,6 +99,10 @@ const updateLike = (id, data, res) => {
 };
 
 // delete like in DB based on ID
+/**
+ * @param {number} id - like id
+ * @param {object} res - response object
+ */
 const deleteLike = (id, res) => {
     Like.destroy({ where: { id: id } })
         .then((data) => {

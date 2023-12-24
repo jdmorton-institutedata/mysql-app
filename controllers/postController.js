@@ -2,6 +2,9 @@
 const Post = require('../models/post');
 
 // finds all posts in DB, then sends array as response
+/**
+ * @param {object} res - response object
+ */
 const getPosts = (res) => {
     Post.findAll({})
         .then((data) => {
@@ -14,6 +17,10 @@ const getPosts = (res) => {
 };
 
 // get single post
+/**
+ * @param {number} id - post id
+ * @param {object} res - response object
+ */
 const getPost = (id, res) => {
     Post.findOne({ where: { id: id } })
         .then((data) => {
@@ -26,6 +33,10 @@ const getPost = (id, res) => {
 };
 
 // get posts by user ID
+/**
+ * @param {number} id - user id
+ * @param {object} res - response object
+ */
 const getPostsByUser = (id, res) => {
     Post.findAll({ where: { userId: id } })
         .then((data) => {
@@ -39,6 +50,10 @@ const getPostsByUser = (id, res) => {
 
 
 // uses JSON from request body to create new post in DB
+/**
+ * @param {object} data - post data
+ * @param {object} res - response object
+ */ 
 const createPost = (data, res) => {
     Post.create(data)
         .then((data) => {
@@ -51,6 +66,11 @@ const createPost = (data, res) => {
 };
 
 // update post in DB based on ID
+/**
+ * @param {number} id - post id
+ * @param {object} data - post data
+ * @param {object} res - response object
+ */
 const updatePost = (id, data, res) => {
     Post.update(data, { where: { id: id } })
         .then((data) => {
@@ -63,6 +83,10 @@ const updatePost = (id, data, res) => {
 };
 
 // delete post in DB based on ID
+/**
+ * @param {number} id - post id
+ * @param {object} res - response object
+ */
 const deletePost = (id, res) => {
     Post.destroy({ where: { id: id } })
         .then((data) => {

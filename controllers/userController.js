@@ -1,6 +1,9 @@
 const User = require("../models/user");
 
 // finds all users in DB, then sends array as response
+/**
+ * @param {object} res - response object
+ */
 const getUsers = (res) => {
   User.findAll({})
     .then((data) => {
@@ -13,6 +16,10 @@ const getUsers = (res) => {
 };
 
 // get single user
+/**
+ * @param {number} id - user id
+ * @param {object} res - response object
+ */
 const getUser = (id, res) => {
   User.findOne({ where: { id: id } })
     .then((data) => {
@@ -25,6 +32,10 @@ const getUser = (id, res) => {
 };
 
 // uses JSON from request body to create new user in DB
+/**
+ * @param {object} data - user data
+ * @param {object} res - response object
+ */
 const createUser = (data, res) => {
   User.create(data)
     .then((data) => {
@@ -37,6 +48,11 @@ const createUser = (data, res) => {
 };
 
 // update user in DB based on ID
+/**
+ * @param {number} id - user id
+ * @param {object} data - user data
+ * @param {object} res - response object
+ */
 const updateUser = (id, data, res) => {
   User.update(data, { where: { id: id } })
     .then((data) => {
@@ -49,6 +65,10 @@ const updateUser = (id, data, res) => {
 };
 
 //delete user in DB based on ID
+/**
+ * @param {number} id - user id
+ * @param {object} res - response object
+ */
 const deleteUser = (id, res) => {
   User.destroy({ where: { id: id } })
     .then((data) => {
