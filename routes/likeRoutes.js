@@ -1,4 +1,6 @@
 const express = require('express');
+const {validationResult} = require('express-validator');
+const { likeValidator, likeUpdateValidator } = require("../validators/likeValidator");
 const router = express.Router();
 const likeController = require('../controllers/likeController');
 
@@ -120,10 +122,19 @@ router.get('/user/:id', (req, res) => likeController.getLikesByUser(req.params.i
  *          description: Like created successfully
  *      '400':
  *          description: Bad request
+ *      '422':
+ *        description: Validation error
  *      '500':
  *          description: Server error
  */
-router.post('/', (req, res) => likeController.createLike(req.body, res));
+router.post('/', likeValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    } else {
+        likeController.createLike(req.body, res);
+    }
+});
 
 /**
  * @swagger
@@ -186,10 +197,19 @@ router.get('/:id', (req, res) => likeController.getLike(req.params.id, res));
  *          description: Bad request
  *      '404':
  *          description: Like not found
+ *      '422':
+ *         description: Validation error
  *      '500':
  *          description: Server error
  */
-router.put('/:id', (req, res) => likeController.updateLike(req.params.id, req.body, res));
+router.put('/:id', likeUpdateValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    } else {
+        likeController.updateLike(req.params.id, req.body, res);
+    }
+});
 
 /**
  * @swagger
@@ -214,6 +234,8 @@ router.put('/:id', (req, res) => likeController.updateLike(req.params.id, req.bo
  *      '500':
  *          description: Server error
  */
-router.delete('/:id', (req, res) => likeController.deleteLike(req.params.id, res));
+router.delete('/:id', (req, res) => {   
+    likeController.deleteLike(req.params.id, res)
+});
 
 module.exports = router;

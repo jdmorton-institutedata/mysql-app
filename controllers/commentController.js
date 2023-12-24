@@ -90,6 +90,9 @@ const createComment = (data, res) => {
 const updateComment = (id, data, res) => {
     Comment.update(data, { where: { id: id } })
         .then((data) => {
+            if (!data) {
+                res.send({ result: 404, error: 'Comment not found' });
+            }
             res.send({ result: 200, data: data });
         })
         .catch((err) => {

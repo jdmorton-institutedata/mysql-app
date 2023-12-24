@@ -1,4 +1,6 @@
 const express = require('express');
+const {validationResult} = require('express-validator');
+const { commentValidator, commentUpdateValidator } = require("../validators/commentValidator");
 const router = express.Router();
 const commentController = require('../controllers/commentController');
 
@@ -50,11 +52,12 @@ router.get('/:id', (req, res) => {
     commentController.getComment(req.params.id, res);
 });
 
+// generate swagger documentation for post request
 /**
  * @swagger
  * /api/comments:
  *  post:
- *    description: Use to create a new comment
+ *    description: Use to create a comment
  *    tags:
  *      - Comments
  *    requestBody:
@@ -64,26 +67,32 @@ router.get('/:id', (req, res) => {
  *          type: object
  *          properties:
  *           postId:
- *              type: integer
- *              description: ID of post to comment on
- *              example: 1
- *           userId:
  *             type: integer
- *             description: ID of user who commented on the post
+ *             description: ID of post to comment on
  *             example: 1
+ *           userId:
+ *            type: integer
+ *            description: ID of user who commented on the post
+ *            example: 1
  *           content:
- *             type: string
- *             description: Content of comment
- *             example: This is a comment   
+ *            type: string
+ *            description: Content of comment
+ *            example: This is a comment 
  *    responses:
  *      '200':
  *          description: A successful response
+ *      '422':
+ *         description: Invalid input
  *      '500':
  *          description: Server error
  */
-router.post('/', (req, res) => {
-    // Logic to create a new comment
-    commentController.createComment(req.body, res);
+router.post('/', commentValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    } else  {
+        commentController.createComment(req.body, res);
+    }
 });
 
 /**
@@ -124,11 +133,16 @@ router.post('/', (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Comment not found
+ *      '422':
+ *         description: Invalid input
  *      '500':
  *          description: Server error
  */
-router.put('/:id', (req, res) => {
-    // Logic to update a specific comment by ID
+router.put('/:id', commentUpdateValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    }
     commentController.updateComment(req.params.id, req.body, res);
 });
 

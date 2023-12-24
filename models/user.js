@@ -21,6 +21,9 @@ const User = db.Sequelize.define(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: [6, 50],
+      },
     },
   },
   {
