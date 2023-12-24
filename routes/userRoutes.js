@@ -1,112 +1,135 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const userController = require('../controllers/userController');
+const userController = require("../controllers/userController");
 
-// GET /users
 /**
  * @swagger
  * /users:
- * get:
- * description: Use to request all users
- * responses: 200
- * description: A successful response
+ *  get:
+ *    description: Use to request all users
+ *    responses:
+ *      '200':
+ *        description: A successful response
  */
-router.get('/', (req, res) => {
-    // Logic to fetch all users using userController
-    userController.getUsers(res);
+router.get("/", (req, res) => {
+  userController.getUsers(res);
 });
 
-// GET /users/:id
 /**
  * @swagger
  * /users/{id}:
- * get:
- * description: Use to request a specific user
- * parameters:
- * - name: id
- * in: path
- * required: true
- * description: Numeric ID of the user to get
- * schema:
- * type: integer
- * format: int64
- * responses: 200
- * description: A successful response
+ *  get:
+ *    description: Use to request a user by ID
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: ID of user to fetch
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        example: 1
+ *    responses:
+ *      '200':
+ *        description: A successful response
  */
-router.get('/:id', (req, res) => {
-    // Logic to fetch a specific user by ID
-    userController.getUser(req.params.id, res);
+router.get("/:id", (req, res) => {
+  userController.getUser(req.params.id, res);
 });
 
-// POST /users
 /**
  * @swagger
  * /users:
- * post:
- * description: Use to create a new user
- * parameters:
- * - name: name
- * in: formData
- * required: true
- * description: Name of the user
- * schema:
- * type: string
- * responses: 200
- * description: A successful response
+ *  post:
+ *    description: Use to create a new user
+ *    requestBody:
+ *     content:
+ *      application/json:
+ *       schema:
+ *        type: object
+ *        required:
+ *         - name
+ *         - email
+ *         - password
+ *        properties:
+ *         name:
+ *          type: string
+ *          example: John Doe
+ *         email:
+ *          type: string
+ *          example: john@dudes.com
+ *         password:
+ *          type: string
+ *          example: password
+ *  responses:
+ *   '200':
+ *    description: A successful response
  */
-router.post('/', (req, res) => {
-    // Logic to create a new user
-    userController.createUser(req.body, res);
+router.post("/", (req, res) => {
+  console.log(req.body, "req.body");
+  userController.createUser(req.body, res);
 });
 
-// PUT /users/:id
+// generate jsdoc yaml comment with correct indenting
 /**
  * @swagger
  * /users/{id}:
- * put:
- * description: Use to update an existing user
- * parameters:
- * - name: id
- * in: path
- * required: true
- * description: Numeric ID of the user to update
- * schema:
- * type: integer
- * format: int64
- * - name: name
- * in: formData
- * required: true
- * description: Name of the user
- * schema:
- * type: string
- * responses: 200
- * description: A successful response
+ *  put:
+ *    description: Use to update a user by ID
+ *    requestBody:
+ *     content:
+ *      application/json:
+ *       schema:
+ *        type: object
+ *        required:
+ *         - name
+ *         - email
+ *         - password
+ *        properties:
+ *         name:
+ *          type: string
+ *          example: John Doe
+ *         email:
+ *          type: string
+ *          example: john@dudes.com
+ *         password:
+ *          type: string
+ *          example: password
+ *    parameters:
+ *     - name: id
+ *       in: path
+ *       description: ID of user to update
+ *       required: true
+ *       type: integer
+ *       minimum: 1
+ *       example: 1
+ * responses:
+ *  '200':
+ *   description: A successful response
  */
-router.put('/:id', (req, res) => {
-    // Logic to update a specific user by ID
-    userController.updateUser(req.params.id, req.body, res);
+router.put("/:id", (req, res) => {
+  userController.updateUser(req.params.id, req.body, res);
 });
 
-// DELETE /users/:id
 /**
  * @swagger
  * /users/{id}:
- * delete:
- * description: Use to delete an existing user
- * parameters:
- * - name: id
- * in: path
- * required: true
- * description: Numeric ID of the user to delete
- * schema:
- * type: integer
- * format: int64
- * responses: 200
- * description: A successful response
+ *  delete:
+ *    description: Use to delete a user by ID
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: ID of user to delete
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        example: 1
+ *  responses:
+ *   '200':
+ *    description: A successful response
  */
-router.delete('/:id', (req, res) => {
-    // Logic to delete a specific user by ID
-    userController.deleteUser(req.params.id, res);
+router.delete("/:id", (req, res) => {
+  // Logic to delete a specific user by ID
+  userController.deleteUser(req.params.id, res);
 });
 
 module.exports = router;

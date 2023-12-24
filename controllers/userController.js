@@ -82,6 +82,7 @@ const deleteUser = (id, res) => {
 
 // exports functions for use in routes
 module.exports = {
+  getUser,
   getUsers,
   createUser,
   updateUser,
