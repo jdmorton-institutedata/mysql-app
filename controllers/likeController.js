@@ -59,7 +59,6 @@ const getLikesByUser = (id, res) => {
             res.send({ result: 200, data: data });
         })
         .catch((err) => {
-
             console.log(err);
             res.send({ result: 500, error: err.message });
         });
@@ -90,6 +89,9 @@ const createLike = (data, res) => {
 const updateLike = (id, data, res) => {
     Like.update(data, { where: { id: id } })
         .then((data) => {
+            if (!data) {
+                res.send({ result: 404, message: "Like not found" });
+            }
             res.send({ result: 200, data: data });
         })
         .catch((err) => {
@@ -106,6 +108,9 @@ const updateLike = (id, data, res) => {
 const deleteLike = (id, res) => {
     Like.destroy({ where: { id: id } })
         .then((data) => {
+            if (!data) {
+                res.send({ result: 404, message: "Like not found" });
+            }
             res.send({ result: 200, data: data });
         })
         .catch((err) => {

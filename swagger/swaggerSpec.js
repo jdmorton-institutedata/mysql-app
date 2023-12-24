@@ -3,7 +3,7 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerDocument = {
   openapi: '3.0.0',
   info: {
-    title: 'My API',
+    title: 'Blog API',
     version: '1.0.0',
     description: 'An example Blog API for learning Swagger',
   },

@@ -21,6 +21,81 @@ router.get('/', (req, res) => likeController.getLikes(res));
 
 /**
  * @swagger
+ * /api/likes/{id}:
+ *  get:
+ *    description: Use to request a like by ID
+ *    tags:
+ *      - Likes
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: ID of like to fetch
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        example: 1
+ *    responses:
+ *      '200':
+ *          description: A successful response
+ *      '404':
+ *          description: Like not found
+ *      '500':
+ *          description: Server error
+ */
+router.get('/:id', (req, res) => likeController.getLike(req.params.id, res));
+
+/**
+ * @swagger
+ * /api/likes/post/{id}:
+ *  get:
+ *    description: Use to request likes by post ID
+ *    tags:
+ *      - Likes
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: ID of post to fetch likes
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        example: 1
+ *    responses:
+ *      '200':
+ *          description: A successful response
+ *      '404':
+ *          description: Like not found
+ *      '500':
+ *          description: Server error
+ */
+router.get('/post/:id', (req, res) => likeController.getLikesByPost(req.params.id, res));
+
+/**
+ * @swagger
+ * /api/likes/user/{id}:
+ *  get:
+ *    description: Use to request likes by user ID
+ *    tags:
+ *      - Likes
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: ID of user to fetch likes
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        example: 1
+ *    responses:
+ *      '200':
+ *          description: A successful response
+ *      '404':
+ *          description: Like not found
+ *      '500':
+ *          description: Server error
+ */
+router.get('/user/:id', (req, res) => likeController.getLikesByUser(req.params.id, res));
+
+/**
+ * @swagger
  * /api/likes:
  *  post:
  *    description: Use to create a new like
