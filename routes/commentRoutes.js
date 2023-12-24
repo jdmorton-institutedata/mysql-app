@@ -95,6 +95,62 @@ router.post('/', commentValidator, (req, res) => {
     }
 });
 
+// get comments by post id
+/**
+ * @swagger
+ * /api/comments/post/{id}:
+ *  get:
+ *    description: Use to request all comments by post id
+ *    tags:
+ *      - Comments
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: ID of post to fetch comments
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        example: 1
+ *    responses:
+ *      '200':
+ *          description: A successful response
+ *      '404':
+ *          description: Comment not found
+ *      '500':
+ *          description: Server error
+ */
+router.get('/post/:id', (req, res) => {
+    commentController.getCommentsByPostId(req.params.id, res);
+});
+
+/**
+ * @swagger
+ * /api/comments/user/{id}:
+ *  get:
+ *    description: Use to request all comments by user id
+ *    tags:
+ *      - Comments
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: ID of user to fetch comments
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        example: 1
+ *    responses:
+ *      '200':
+ *          description: A successful response
+ *      '404':
+ *          description: Comment not found
+ *      '500':
+ *          description: Server error
+ */
+router.get('/user/:id', (req, res) => {
+    commentController.getCommentsByUserId(req.params.id, res);
+});
+
+
 /**
  * @swagger
  * /api/comments/{id}:
