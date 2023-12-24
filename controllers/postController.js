@@ -24,6 +24,9 @@ const getPosts = (res) => {
 const getPost = (id, res) => {
     Post.findOne({ where: { id: id } })
         .then((data) => {
+            if (!data) {
+                res.sendStatus(404);
+            }
             res.send({ result: 200, data: data });
         })
         .catch((err) => {
@@ -90,6 +93,9 @@ const updatePost = (id, data, res) => {
 const deletePost = (id, res) => {
     Post.destroy({ where: { id: id } })
         .then((data) => {
+            if (!data) {
+                res.sendStatus(404);
+            }
             res.send({ result: 200, data: data });
         })
         .catch((err) => {
@@ -101,6 +107,7 @@ const deletePost = (id, res) => {
 // get user
 
 module.exports = {
+    getPost,
     getPosts,
     createPost,
     updatePost,

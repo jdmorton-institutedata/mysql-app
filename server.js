@@ -12,13 +12,13 @@ app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec.default));
 
-app.use("/users", require("./routes/userRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 // add post routes
-app.use("/posts", require("./routes/postRoutes"));
+app.use("/api/posts", require("./routes/postRoutes"));
 // add comment routes
-app.use("/comments", require("./routes/commentRoutes"));
+app.use("/api/comments", require("./routes/commentRoutes"));
 // add like routes
-app.use("/likes", require("./routes/likeRoutes"));
+app.use("/api/likes", require("./routes/likeRoutes"));
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my Blog application." });

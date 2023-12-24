@@ -23,6 +23,9 @@ const getUsers = (res) => {
 const getUser = (id, res) => {
   User.findOne({ where: { id: id } })
     .then((data) => {
+      if (!data) {
+        res.sendStatus(404);
+      }
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
@@ -56,6 +59,9 @@ const createUser = (data, res) => {
 const updateUser = (id, data, res) => {
   User.update(data, { where: { id: id } })
     .then((data) => {
+      if (!data) {
+        res.sendStatus(404);
+      }
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
@@ -72,6 +78,9 @@ const updateUser = (id, data, res) => {
 const deleteUser = (id, res) => {
   User.destroy({ where: { id: id } })
     .then((data) => {
+      if (!data) {
+        res.sendStatus(404);
+      }
       res.send({ result: 200, data: data });
     })
     .catch((err) => {

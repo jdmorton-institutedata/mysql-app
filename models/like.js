@@ -7,10 +7,6 @@ const Like = db.Sequelize.define('Like', {
         primaryKey: true,
         autoIncrement: true,
     },
-    content: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
     postId: {
         type: DataTypes.INTEGER,
         allowNull: false,

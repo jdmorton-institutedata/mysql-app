@@ -4,7 +4,7 @@ const userController = require("../controllers/userController");
 
 /**
  * @swagger
- * /users:
+ * /api/users:
  *  get:
  *    description: Use to request all users
  *    tags:
@@ -23,7 +23,7 @@ router.get("/", (req, res) => {
 
 /**
  * @swagger
- * /users/{id}:
+ * /api/users/{id}:
  *  get:
  *    description: Use to request a user by ID
  *    tags:
@@ -50,7 +50,7 @@ router.get("/:id", (req, res) => {
 
 /**
  * @swagger
- * /users:
+ * /api/users:
  *  post:
  *    description: Use to create a new user
  *    tags:
@@ -90,7 +90,7 @@ router.post("/", (req, res) => {
 // generate jsdoc yaml comment with correct indenting
 /**
  * @swagger
- * /users/{id}:
+ * /api/users/{id}:
  *  put:
  *    description: Use to update a user by ID
  *    tags:
@@ -136,7 +136,7 @@ router.put("/:id", (req, res) => {
 
 /**
  * @swagger
- * /users/{id}:
+ * /api/users/{id}:
  *  delete:
  *    description: Use to delete a user by ID
  *    tags:
