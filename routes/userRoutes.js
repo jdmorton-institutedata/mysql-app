@@ -7,9 +7,15 @@ const userController = require("../controllers/userController");
  * /users:
  *  get:
  *    description: Use to request all users
+ *    tags:
+ *      - Users
  *    responses:
  *      '200':
  *        description: A successful response
+ *      '404':
+ *        description: User not found
+ *      '500':
+ *        description: Server error
  */
 router.get("/", (req, res) => {
   userController.getUsers(res);
@@ -20,6 +26,8 @@ router.get("/", (req, res) => {
  * /users/{id}:
  *  get:
  *    description: Use to request a user by ID
+ *    tags:
+ *      - Users
  *    parameters:
  *      - name: id
  *        in: path
@@ -31,6 +39,10 @@ router.get("/", (req, res) => {
  *    responses:
  *      '200':
  *        description: A successful response
+ *      '404':
+ *        description: User not found
+ *      '500':
+ *        description: Server error
  */
 router.get("/:id", (req, res) => {
   userController.getUser(req.params.id, res);
@@ -41,6 +53,8 @@ router.get("/:id", (req, res) => {
  * /users:
  *  post:
  *    description: Use to create a new user
+ *    tags:
+ *      - Users
  *    requestBody:
  *     content:
  *      application/json:
@@ -60,9 +74,13 @@ router.get("/:id", (req, res) => {
  *         password:
  *          type: string
  *          example: password
- *  responses:
- *   '200':
- *    description: A successful response
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '404':
+ *        description: User not found
+ *      '500':
+ *        description: Server error
  */
 router.post("/", (req, res) => {
   console.log(req.body, "req.body");
@@ -75,6 +93,8 @@ router.post("/", (req, res) => {
  * /users/{id}:
  *  put:
  *    description: Use to update a user by ID
+ *    tags:
+ *      - Users
  *    requestBody:
  *     content:
  *      application/json:
@@ -102,9 +122,13 @@ router.post("/", (req, res) => {
  *       type: integer
  *       minimum: 1
  *       example: 1
- * responses:
- *  '200':
- *   description: A successful response
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '404':
+ *        description: User not found
+ *      '500':
+ *        description: Server error
  */
 router.put("/:id", (req, res) => {
   userController.updateUser(req.params.id, req.body, res);
@@ -115,6 +139,8 @@ router.put("/:id", (req, res) => {
  * /users/{id}:
  *  delete:
  *    description: Use to delete a user by ID
+ *    tags:
+ *      - Users
  *    parameters:
  *      - name: id
  *        in: path
@@ -123,9 +149,13 @@ router.put("/:id", (req, res) => {
  *        type: integer
  *        minimum: 1
  *        example: 1
- *  responses:
- *   '200':
- *    description: A successful response
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '404':
+ *        description: User not found
+ *      '500':
+ *        description: Server error
  */
 router.delete("/:id", (req, res) => {
   // Logic to delete a specific user by ID
