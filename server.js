@@ -1,24 +1,27 @@
 const express = require("express");
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerSpec = require('./swagger/swaggerSpec');
 
 require("dotenv").config();
 require("./config/database");
 require("./models");
 
-// parse requests of content-type - application / json;
 app.use(express.json());
 
-// add user routes
-app.use("/users", require("./routes/userRoutes"));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec.default));
+
+app.use("/api/users", require("./routes/userRoutes"));
 // add post routes
-app.use("/posts", require("./routes/postRoutes"));
+app.use("/api/posts", require("./routes/postRoutes"));
 // add comment routes
-app.use("/comments", require("./routes/commentRoutes"));
+app.use("/api/comments", require("./routes/commentRoutes"));
 // add like routes
-app.use("/likes", require("./routes/likeRoutes"));
+app.use("/api/likes", require("./routes/likeRoutes"));
 
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to my MongoDB application." });
+  res.json({ message: "Welcome to my Blog application." });
 });
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;
