@@ -1,6 +1,6 @@
 const express = require('express');
 const {validationResult} = require('express-validator');
-const { commentValidator, commentUpdateValidator } = require("../validators/commentValidator");
+const { commentValidator, commentUpdateValidator, commentParamValidator } = require("../validators/commentValidator");
 const router = express.Router();
 const commentController = require('../controllers/commentController');
 
@@ -44,12 +44,18 @@ router.get('/', (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Comment not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/:id', (req, res) => {
-    // Logic to fetch a specific comment by ID
-    commentController.getComment(req.params.id, res);
+router.get('/:id', commentParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    } else {
+        commentController.getComment(req.params.id, res);
+    }
 });
 
 // get single comment include all
@@ -73,12 +79,18 @@ router.get('/:id', (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Comment not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/:id/include', (req, res) => {
-    // Logic to fetch a specific comment by ID with all associations
-    commentController.getCommentIncludeAll(req.params.id, res);
+router.get('/:id/include', commentParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    } else {
+        commentController.getCommentIncludeAll(req.params.id, res);
+    }
 });
 
 
@@ -145,11 +157,18 @@ router.post('/', commentValidator, (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Comment not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/post/:id', (req, res) => {
-    commentController.getCommentsByPostId(req.params.id, res);
+router.get('/post/:id', commentParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    } else {
+        commentController.getCommentsByPostId(req.params.id, res);
+    }
 });
 
 /**
@@ -172,11 +191,18 @@ router.get('/post/:id', (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Comment not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/user/:id', (req, res) => {
-    commentController.getCommentsByUserId(req.params.id, res);
+router.get('/user/:id', commentParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    } else {
+        commentController.getCommentsByUserId(req.params.id, res);
+    }
 });
 
 
@@ -251,12 +277,18 @@ router.put('/:id', commentUpdateValidator, (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Comment not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.delete('/:id', (req, res) => {
-    // Logic to delete a specific comment by ID
-    commentController.deleteComment(req.params.id, res);
+router.delete('/:id', commentParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    } else {
+        commentController.deleteComment(req.params.id, res);
+    }
 });
 
 module.exports = router;

@@ -1,8 +1,9 @@
 const express = require('express');
 const {validationResult} = require('express-validator');
-const { postValidator, postUpdateValidator } = require("../validators/postValidator");
+const { postValidator, postUpdateValidator, postParamValidator } = require("../validators/postValidator");
 const router = express.Router();
 const postController = require('../controllers/postController');
+const e = require('express');
 
 /**
  * @swagger
@@ -43,12 +44,18 @@ router.get('/', (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Post not found
+ *      '422':
+ *        description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/:id', (req, res) => {
-    // Logic to fetch a specific post by ID
-    postController.getPost(req.params.id, res);
+router.get('/:id', postParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    } else {
+        postController.getPost(req.params.id, res);
+    }
 });
 
 // get single post include all
@@ -72,12 +79,18 @@ router.get('/:id', (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Post not found
+ *      '422':
+ *        description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/:id/include', (req, res) => {
-    // Logic to fetch a specific post by ID
-    postController.getPostIncludeAll(req.params.id, res);
+router.get('/:id/include', postParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    } else {
+        postController.getPostIncludeAll(req.params.id, res);
+    }
 });
 
 
@@ -101,12 +114,18 @@ router.get('/:id/include', (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Post not found
+ *      '422':
+ *        description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/user/:id', (req, res) => {
-    // Logic to fetch all posts by user ID
-    postController.getPostsByUser(req.params.id, res);
+router.get('/user/:id', postParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    } else {
+        postController.getPostsByUser(req.params.id, res);
+    }
 });
 
 /**
@@ -223,12 +242,18 @@ router.put('/:id', postUpdateValidator, (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Post not found
+ *      '422':
+ *        description: Validation error
  *      '500':
  *          description: Server error
  */
 router.delete('/:id', (req, res) => {
-    // Logic to delete a specific post by ID
-    postController.deletePost(req.params.id, res);
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        postController.deletePost(req.params.id, res);
+    } else {
+        res.status(422).json({ errors: errors.array() });
+    }
 });
 
 module.exports = router;

@@ -18,8 +18,14 @@ const commentValidator = [
     body('content', 'content is required').not().isEmpty(),
   ];
 
+  const commentParamValidator = [
+    param('id', 'id is required').not().isEmpty(),
+    param('id', 'id should be a number').isNumeric(),
+  ];
+
   module.exports = {
     commentValidator,
-    commentUpdateValidator
+    commentUpdateValidator,
+    commentParamValidator
   }
   

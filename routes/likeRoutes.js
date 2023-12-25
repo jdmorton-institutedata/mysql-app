@@ -1,6 +1,6 @@
 const express = require('express');
 const {validationResult} = require('express-validator');
-const { likeValidator, likeUpdateValidator } = require("../validators/likeValidator");
+const { likeValidator, likeUpdateValidator, likeParamValidator } = require("../validators/likeValidator");
 const router = express.Router();
 const likeController = require('../controllers/likeController');
 
@@ -41,10 +41,19 @@ router.get('/', (req, res) => likeController.getLikes(res));
  *          description: A successful response
  *      '404':
  *          description: Like not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/:id', (req, res) => likeController.getLike(req.params.id, res));
+router.get('/:id', likeParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    } else {
+        likeController.getLike(req.params.id, res);
+    }
+});
 
 /**
  * @swagger
@@ -66,10 +75,19 @@ router.get('/:id', (req, res) => likeController.getLike(req.params.id, res));
  *          description: A successful response
  *      '404':
  *          description: Like not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/post/:id', (req, res) => likeController.getLikesByPost(req.params.id, res));
+router.get('/post/:id', likeParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    } else {
+        likeController.getLikesByPost(req.params.id, res);
+    }
+});
 
 /**
  * @swagger
@@ -91,10 +109,19 @@ router.get('/post/:id', (req, res) => likeController.getLikesByPost(req.params.i
  *          description: A successful response
  *      '404':
  *          description: Like not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/user/:id', (req, res) => likeController.getLikesByUser(req.params.id, res));
+router.get('/user/:id', likeParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    } else {
+        likeController.getLikesByUser(req.params.id, res);
+    }
+});
 
 /**
  * @swagger
@@ -156,10 +183,19 @@ router.post('/', likeValidator, (req, res) => {
  *          description: A successful response
  *      '404':
  *          description: Like not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/:id', (req, res) => likeController.getLike(req.params.id, res));
+router.get('/:id', likeParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    } else {
+        likeController.getLike(req.params.id, res);
+    }
+});
 
 // get single like include all with swagger documentation
 /**
@@ -182,10 +218,19 @@ router.get('/:id', (req, res) => likeController.getLike(req.params.id, res));
  *          description: A successful response
  *      '404':
  *          description: Like not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.get('/include/:id', (req, res) => likeController.getLikeIncludeAll(req.params.id, res));
+router.get('/include/:id', likeParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    } else {
+        likeController.getLikeIncludeAll(req.params.id, res);
+    }
+});
 
 
 /**
@@ -258,11 +303,18 @@ router.put('/:id', likeUpdateValidator, (req, res) => {
  *          description: Like deleted successfully
  *      '404':
  *          description: Like not found
+ *      '422':
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
-router.delete('/:id', (req, res) => {   
-    likeController.deleteLike(req.params.id, res)
+router.delete('/:id', likeParamValidator, (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).send({ errors: errors.array() });
+    } else {
+        likeController.deleteLike(req.params.id, res);
+    }
 });
 
 module.exports = router;
