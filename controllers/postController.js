@@ -35,6 +35,25 @@ const getPost = (id, res) => {
         });
 };
 
+// get single post include all
+/**
+ * @param {number} id - post id
+ * @param {object} res - response object
+ */
+const getPostIncludeAll = (id, res) => {
+    Post.findOne({ where: { id: id }, include: { all: true } })
+        .then((data) => {
+            if (!data) {
+                res.sendStatus(404);
+            }
+            res.send({ result: 200, data: data });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send({ result: 500, error: err.message });
+        });
+}
+
 // get posts by user ID
 /**
  * @param {number} id - user id
@@ -108,6 +127,7 @@ const deletePost = (id, res) => {
 
 module.exports = {
     getPost,
+    getPostIncludeAll,
     getPosts,
     createPost,
     updatePost,

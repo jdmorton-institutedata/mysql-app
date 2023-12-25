@@ -51,6 +51,36 @@ router.get('/:id', (req, res) => {
     postController.getPost(req.params.id, res);
 });
 
+// get single post include all
+/**
+ * @swagger
+ * /api/posts/{id}/include:
+ *  get:
+ *    description: Use to request a post by ID with all associations
+ *    tags:
+ *      - Posts
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: ID of post to fetch
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        example: 1
+ *    responses:
+ *      '200':
+ *          description: A successful response
+ *      '404':
+ *          description: Post not found
+ *      '500':
+ *          description: Server error
+ */
+router.get('/:id/include', (req, res) => {
+    // Logic to fetch a specific post by ID
+    postController.getPostIncludeAll(req.params.id, res);
+});
+
+
 /**
  * @swagger
  * /api/posts/user/{id}:

@@ -23,7 +23,31 @@ const getLikes = (res) => {
 const getLike = (id, res) => {
     Like.findOne({ where: { id: id } })
         .then((data) => {
-            res.send({ result: 200, data: data });
+            if (!data) {
+                res.send({ result: 404, message: "Like not found" });
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send({ result: 500, error: err.message });
+        });
+};
+
+// get single like include all
+/**
+ * @param {number} id - like id
+ * @param {object} res - response object
+ */
+const getLikeIncludeAll = (id, res) => {
+    Like.findOne({ where: { id: id }, include: { all: true } })
+        .then((data) => {
+            if (!data) {
+                res.send({ result: 404, message: "Like not found" });
+            } else {
+                res.send({ result: 200, data: data });
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -39,7 +63,11 @@ const getLike = (id, res) => {
 const getLikesByPost = (id, res) => {
     Like.findAll({ where: { postId: id } })
         .then((data) => {
-            res.send({ result: 200, data: data });
+            if (!data) {
+                res.send({ result: 404, message: "Post not found" });
+            } else {
+                res.send({ result: 200, data: data });
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -56,7 +84,11 @@ const getLikesByPost = (id, res) => {
 const getLikesByUser = (id, res) => {
     Like.findAll({ where: { userId: id } })
         .then((data) => {
-            res.send({ result: 200, data: data });
+            if (!data) {
+                res.send({ result: 404, message: "User not found" });
+            } else {
+                res.send({ result: 200, data: data });
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -125,6 +157,7 @@ module.exports = {
     updateLike,
     deleteLike,
     getLike,
+    getLikeIncludeAll,
     getLikesByPost,
     getLikesByUser,
 };

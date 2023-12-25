@@ -52,7 +52,36 @@ router.get('/:id', (req, res) => {
     commentController.getComment(req.params.id, res);
 });
 
-// generate swagger documentation for post request
+// get single comment include all
+/**
+ * @swagger
+ * /api/comments/{id}/include:
+ *  get:
+ *    description: Use to request a comment by ID with all associations
+ *    tags:
+ *      - Comments
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: ID of comment to fetch
+ *        required: true
+ *        type: integer
+ *        minimum: 1
+ *        example: 1
+ *    responses:
+ *      '200':
+ *          description: A successful response
+ *      '404':
+ *          description: Comment not found
+ *      '500':
+ *          description: Server error
+ */
+router.get('/:id/include', (req, res) => {
+    // Logic to fetch a specific comment by ID with all associations
+    commentController.getCommentIncludeAll(req.params.id, res);
+});
+
+
 /**
  * @swagger
  * /api/comments:
