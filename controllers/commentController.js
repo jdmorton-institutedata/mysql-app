@@ -32,6 +32,22 @@ const getComment = (id, res) => {
         });
 };
 
+// get single comment include all
+/**
+ * @param {number} id - comment id
+ * @param {object} res - response object
+ */
+const getCommentIncludeAll = (id, res) => {
+    Comment.findOne({ where: { id: id }, include: { all: true } })
+        .then((data) => {
+            res.send({ result: 200, data: data });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send({ result: 500, error: err.message });
+        });
+};
+
 // get comments by post ID
 /**
  * @param {number} id - post id
@@ -90,6 +106,9 @@ const createComment = (data, res) => {
 const updateComment = (id, data, res) => {
     Comment.update(data, { where: { id: id } })
         .then((data) => {
+            if (!data) {
+                res.send({ result: 404, error: 'Comment not found' });
+            }
             res.send({ result: 200, data: data });
         })
         .catch((err) => {
@@ -120,6 +139,7 @@ module.exports = {
     updateComment,
     deleteComment,
     getComment,
+    getCommentIncludeAll,
     getCommentsByPost,
     getCommentsByUser,
 };

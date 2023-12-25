@@ -1,4 +1,6 @@
 const express = require("express");
+const {validationResult} = require('express-validator');
+const { userValidator, userUpdateValidator, userParamValidator } = require("../validators/userValidator");
 const router = express.Router();
 const userController = require("../controllers/userController");
 
@@ -41,11 +43,19 @@ router.get("/", (req, res) => {
  *        description: A successful response
  *      '404':
  *        description: User not found
+ *      '422':
+ *        description: Validation error
  *      '500':
  *        description: Server error
  */
-router.get("/:id", (req, res) => {
-  userController.getUser(req.params.id, res);
+router.get("/:id", userParamValidator, (req, res) => {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    userController.getUser(req.params.id, res);
+  }
+  else {
+    res.status(422).json({errors: errors.array()});
+  }
 });
 
 /**
@@ -79,15 +89,20 @@ router.get("/:id", (req, res) => {
  *        description: A successful response
  *      '404':
  *        description: User not found
+ *      '422':
+ *        description: Validation error
  *      '500':
  *        description: Server error
  */
-router.post("/", (req, res) => {
-  console.log(req.body, "req.body");
-  userController.createUser(req.body, res);
+router.post("/", userValidator, (req, res) => {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    userController.createUser(req.body, res);
+  } else {
+    res.status(422).json({errors: errors.array()})
+  }
 });
 
-// generate jsdoc yaml comment with correct indenting
 /**
  * @swagger
  * /api/users/{id}:
@@ -127,11 +142,18 @@ router.post("/", (req, res) => {
  *        description: A successful response
  *      '404':
  *        description: User not found
+ *      '422':
+ *        description: Validation error
  *      '500':
  *        description: Server error
  */
-router.put("/:id", (req, res) => {
-  userController.updateUser(req.params.id, req.body, res);
+router.put("/:id", userUpdateValidator, (req, res) => {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    userController.updateUser(req.params.id, req.body, res);
+  } else {
+    res.status(422).json({errors: errors.array()});
+  }
 });
 
 /**
@@ -154,12 +176,19 @@ router.put("/:id", (req, res) => {
  *        description: A successful response
  *      '404':
  *        description: User not found
+ *      '422':
+ *        description: Validation error
  *      '500':
  *        description: Server error
  */
-router.delete("/:id", (req, res) => {
-  // Logic to delete a specific user by ID
-  userController.deleteUser(req.params.id, res);
+router.delete("/:id", userParamValidator, (req, res) => {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    userController.deleteUser(req.params.id, res);
+  }
+  else {
+    res.status(422).json({errors: errors.array()});
+  }
 });
 
 module.exports = router;
