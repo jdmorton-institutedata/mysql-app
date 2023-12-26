@@ -1,6 +1,7 @@
 const express = require('express');
 const {validationResult} = require('express-validator');
-const { likeValidator, likeUpdateValidator, likeParamValidator } = require("../validators/likeValidator");
+const { likeValidator, likeUpdateValidator } = require("../validators/likeValidator");
+const { idParamValidator } = require("../validators/index");
 const router = express.Router();
 const likeController = require('../controllers/likeController');
 
@@ -46,7 +47,7 @@ router.get('/', (req, res) => likeController.getLikes(res));
  *      '500':
  *          description: Server error
  */
-router.get('/:id', likeParamValidator, (req, res) => {
+router.get('/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -80,7 +81,7 @@ router.get('/:id', likeParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/post/:id', likeParamValidator, (req, res) => {
+router.get('/post/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -114,7 +115,7 @@ router.get('/post/:id', likeParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/user/:id', likeParamValidator, (req, res) => {
+router.get('/user/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -188,7 +189,7 @@ router.post('/', likeValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id', likeParamValidator, (req, res) => {
+router.get('/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -223,7 +224,7 @@ router.get('/:id', likeParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/include/:id', likeParamValidator, (req, res) => {
+router.get('/include/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -308,7 +309,7 @@ router.put('/:id', likeUpdateValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.delete('/:id', likeParamValidator, (req, res) => {
+router.delete('/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).send({ errors: errors.array() });

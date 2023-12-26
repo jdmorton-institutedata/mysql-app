@@ -16,14 +16,8 @@ const likeValidator = [
     body('userId', 'userId should be numeric').not().isNumeric(),
   ];
 
-  const likeParamValidator = [
-    param('id', 'id is required').not().isEmpty(),
-    param('id', 'id should be numeric').not().isNumeric(),
-  ];
-
   module.exports = {
     likeValidator,
-    likeUpdateValidator,
-    likeParamValidator
+    likeUpdateValidator
   }
   

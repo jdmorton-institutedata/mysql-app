@@ -1,6 +1,7 @@
 const express = require('express');
 const {validationResult} = require('express-validator');
-const { postValidator, postUpdateValidator, postParamValidator } = require("../validators/postValidator");
+const { postValidator, postUpdateValidator } = require("../validators/postValidator");
+const { idParamValidator } = require("../validators/index");
 const router = express.Router();
 const postController = require('../controllers/postController');
 const e = require('express');
@@ -49,7 +50,7 @@ router.get('/', (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id', postParamValidator, (req, res) => {
+router.get('/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -84,7 +85,7 @@ router.get('/:id', postParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id/include', postParamValidator, (req, res) => {
+router.get('/:id/include', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -119,7 +120,7 @@ router.get('/:id/include', postParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/user/:id', postParamValidator, (req, res) => {
+router.get('/user/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -247,7 +248,7 @@ router.put('/:id', postUpdateValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.delete('/:id', (req, res) => {
+router.delete('/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         postController.deletePost(req.params.id, res);

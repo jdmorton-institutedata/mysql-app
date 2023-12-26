@@ -1,6 +1,7 @@
 const express = require('express');
 const {validationResult} = require('express-validator');
-const { commentValidator, commentUpdateValidator, commentParamValidator } = require("../validators/commentValidator");
+const { commentValidator, commentUpdateValidator } = require("../validators/commentValidator");
+const { idParamValidator } = require("../validators/index");
 const router = express.Router();
 const commentController = require('../controllers/commentController');
 
@@ -49,7 +50,7 @@ router.get('/', (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id', commentParamValidator, (req, res) => {
+router.get('/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).send({ errors: errors.array() });
@@ -84,7 +85,7 @@ router.get('/:id', commentParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id/include', commentParamValidator, (req, res) => {
+router.get('/:id/include', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).send({ errors: errors.array() });
@@ -162,7 +163,7 @@ router.post('/', commentValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/post/:id', commentParamValidator, (req, res) => {
+router.get('/post/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).send({ errors: errors.array() });
@@ -196,7 +197,7 @@ router.get('/post/:id', commentParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/user/:id', commentParamValidator, (req, res) => {
+router.get('/user/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).send({ errors: errors.array() });
@@ -282,7 +283,7 @@ router.put('/:id', commentUpdateValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.delete('/:id', commentParamValidator, (req, res) => {
+router.delete('/:id', idParamValidator, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).send({ errors: errors.array() });

@@ -1,6 +1,7 @@
 const express = require("express");
 const {validationResult} = require('express-validator');
-const { userValidator, userUpdateValidator, userParamValidator } = require("../validators/userValidator");
+const { userValidator, userUpdateValidator } = require("../validators/userValidator");
+const { idParamValidator } = require("../validators");
 const router = express.Router();
 const userController = require("../controllers/userController");
 
@@ -19,8 +20,15 @@ const userController = require("../controllers/userController");
  *      '500':
  *        description: Server error
  */
-router.get("/", (req, res) => {
-  userController.getUsers(res);
+router.get("/", async (req, res) => {
+  try{
+    const data = await userController.getUsers();
+    res.send({ result: 200, data: data });
+  }
+  catch(err){
+    console.log(err);
+    res.send({ result: 500, error: err.message });
+  }
 });
 
 /**
@@ -48,13 +56,24 @@ router.get("/", (req, res) => {
  *      '500':
  *        description: Server error
  */
-router.get("/:id", userParamValidator, (req, res) => {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    userController.getUser(req.params.id, res);
+router.get("/:id", idParamValidator, async (req, res) => {
+  try{
+    let data;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      data = await userController.getUser(req.params.id);
+      if (!data) {
+        res.sendStatus(404);
+      } else {
+        res.send({ result: 200, data: data });
+      }
+    } else {
+      res.status(422).json({errors: errors.array()});
+    }
   }
-  else {
-    res.status(422).json({errors: errors.array()});
+  catch(err){
+    console.log(err);
+    res.send({ result: 500, error: err.message });
   }
 });
 
@@ -94,12 +113,19 @@ router.get("/:id", userParamValidator, (req, res) => {
  *      '500':
  *        description: Server error
  */
-router.post("/", userValidator, (req, res) => {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    userController.createUser(req.body, res);
-  } else {
-    res.status(422).json({errors: errors.array()})
+router.post("/", userValidator, async (req, res) => {
+  try{
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      const data = await userController.createUser(req.body);
+      res.send({ result: 200, data: data });
+    } else {
+      res.status(422).json({errors: errors.array()});
+    }
+  }
+  catch(err){
+    console.log(err);
+    res.send({ result: 500, error: err.message });
   }
 });
 
@@ -147,12 +173,23 @@ router.post("/", userValidator, (req, res) => {
  *      '500':
  *        description: Server error
  */
-router.put("/:id", userUpdateValidator, (req, res) => {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    userController.updateUser(req.params.id, req.body, res);
-  } else {
-    res.status(422).json({errors: errors.array()});
+router.put("/:id", userUpdateValidator, async (req, res) => {
+  try{
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      const data = await userController.updateUser(req.params.id, req.body);
+      if (data[0] === 0) {
+        res.sendStatus(404);
+      } else {
+        res.send({ result: 200, data: data });
+      }
+    } else {
+      res.status(422).json({errors: errors.array()});
+    }
+  }
+  catch(err){
+    console.log(err);
+    res.send({ result: 500, error: err.message });
   }
 });
 
@@ -181,13 +218,23 @@ router.put("/:id", userUpdateValidator, (req, res) => {
  *      '500':
  *        description: Server error
  */
-router.delete("/:id", userParamValidator, (req, res) => {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    userController.deleteUser(req.params.id, res);
+router.delete("/:id", idParamValidator, async (req, res) => {
+  try{
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      const data = await userController.deleteUser(req.params.id);
+      if (!data) {
+        res.sendStatus(404);
+      } else {
+        res.send({ result: 200, data: data });
+      }
+    } else {
+      res.status(422).json({errors: errors.array()});
+    }
   }
-  else {
-    res.status(422).json({errors: errors.array()});
+  catch(err){
+    console.log(err);
+    res.send({ result: 500, error: err.message });
   }
 });
 
