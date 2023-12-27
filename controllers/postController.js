@@ -1,129 +1,75 @@
 // posts controller
 const Post = require('../models/post');
 
-// finds all posts in DB, then sends array as response
 /**
- * @param {object} res - response object
+ * 
+ * @returns Array<Post>
  */
-const getPosts = (res) => {
-    Post.findAll({})
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const getPosts = async () => {
+    const data = await Post.findAll({});
+    return data;
 };
 
-// get single post
 /**
+ * 
  * @param {number} id - post id
- * @param {object} res - response object
+ * @returns {Promise<Post>}
  */
-const getPost = (id, res) => {
-    Post.findOne({ where: { id: id } })
-        .then((data) => {
-            if (!data) {
-                res.sendStatus(404);
-            }
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const getPost = async (id) => {
+    const data = await Post.findOne({ where: { id: id } });
+    return data;
 };
 
-// get single post include all
 /**
+ * 
  * @param {number} id - post id
- * @param {object} res - response object
+ * @returns {Promise<Post>}
  */
-const getPostIncludeAll = (id, res) => {
-    Post.findOne({ where: { id: id }, include: { all: true } })
-        .then((data) => {
-            if (!data) {
-                res.sendStatus(404);
-            }
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const getPostIncludeAll = async (id) => {
+    const data = await Post.findOne({ where: { id: id }, include: { all: true } });
+    return data;
+};
+
+/**
+ * 
+ * @param {number} id - user id
+ * @returns {Promise<Array<Post>>}
+ */
+const getPostsByUser = async (id) => {
+    const data = await Post.findAll({ where: { userId: id } });
+    return data;
+};
+
+/**
+ * 
+ * @param {Post} data - post data
+ * @returns {Promise<Post>}
+ */
+const createPost = async (data) => {
+    const post = await Post.create(data);
+    return post;
 }
 
-// get posts by user ID
 /**
- * @param {number} id - user id
- * @param {object} res - response object
- */
-const getPostsByUser = (id, res) => {
-    Post.findAll({ where: { userId: id } })
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
-};
-
-
-// uses JSON from request body to create new post in DB
-/**
- * @param {object} data - post data
- * @param {object} res - response object
- */ 
-const createPost = (data, res) => {
-    Post.create(data)
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
-};
-
-// update post in DB based on ID
-/**
+ * 
  * @param {number} id - post id
- * @param {object} data - post data
- * @param {object} res - response object
+ * @param {Post} data - post data
+ * @returns {Promise<Post>}
  */
-const updatePost = (id, data, res) => {
-    Post.update(data, { where: { id: id } })
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const updatePost = async (id, data) => {
+    const post = await Post.update(data, { where: { id: id } });
+    return post;
 };
 
-// delete post in DB based on ID
 /**
+ * 
  * @param {number} id - post id
- * @param {object} res - response object
+ * @returns {Promise<number>}
  */
-const deletePost = (id, res) => {
-    Post.destroy({ where: { id: id } })
-        .then((data) => {
-            if (!data) {
-                res.sendStatus(404);
-            }
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const deletePost = async (id) => {
+    const post = await Post.destroy({ where: { id: id } });
+    return post;
 };
-
-// get user
 
 module.exports = {
     getPost,

@@ -12,7 +12,7 @@ const getUsers = async () => {
 /**
  * 
  * @param {number} id - user id
- * @returns {User}
+ * @returns {Promise<User>}
  */
 const getUser = async (id) => {
   const data = await User.findOne({ where: { id: id } });
@@ -22,7 +22,7 @@ const getUser = async (id) => {
 /**
  * 
  * @param {User} data - user data
- * @returns {User}
+ * @returns {Promise<User>}
  */
 const createUser = async (data) => {
   const user = await User.create(data);

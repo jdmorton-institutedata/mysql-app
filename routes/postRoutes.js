@@ -21,8 +21,15 @@ const e = require('express');
  *      '500':
  *          description: Server error
  */
-router.get('/', (req, res) => {
-    postController.getPosts(res);
+router.get('/', async (req, res) => {
+    try{
+        const data = await postController.getPosts();
+        res.send({ result: 200, data: data });
+    }
+    catch(err){
+        console.log(err);
+        res.send({ result: 500, error: err.message });
+    }
 });
 
 /**
@@ -50,16 +57,26 @@ router.get('/', (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id', idParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        postController.getPost(req.params.id, res);
+router.get('/:id', idParamValidator, async (req, res) => {
+    try{
+        const errors = validationResult(req);
+        if (errors.isEmpty()) {
+            const data = await postController.getPost(req.params.id);
+            if(!data){
+                res.sendStatus(404);
+            }
+            else {
+                res.send({ result: 200, data: data });
+            }
+        } else {
+            res.status(422).json({errors: errors.array()});
+        }
+    }catch(err){
+        console.log(err);
+        res.send({ result: 500, error: err.message });
     }
 });
 
-// get single post include all
 /**
  * @swagger
  * /api/posts/{id}/include:
@@ -85,12 +102,23 @@ router.get('/:id', idParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id/include', idParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        postController.getPostIncludeAll(req.params.id, res);
+router.get('/:id/include', idParamValidator, async (req, res) => {
+    try{
+        const errors = validationResult(req);
+        if (errors.isEmpty()) {
+            const data = await postController.getPostIncludeAll(req.params.id);
+            if(!data){
+                res.sendStatus(404);
+            }
+            else {
+                res.send({ result: 200, data: data });
+            }
+        } else {
+            res.status(422).json({errors: errors.array()});
+        }
+    }catch(err){
+        console.log(err);
+        res.send({ result: 500, error: err.message });
     }
 });
 
@@ -120,12 +148,23 @@ router.get('/:id/include', idParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/user/:id', idParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        postController.getPostsByUser(req.params.id, res);
+router.get('/user/:id', idParamValidator, async (req, res) => {
+    try{
+        const errors = validationResult(req);
+        if (errors.isEmpty()) {
+            const data = await postController.getPostsByUser(req.params.id);
+            if(!data){
+                res.sendStatus(404);
+            }
+            else {
+                res.send({ result: 200, data: data });
+            }
+        } else {
+            res.status(422).json({errors: errors.array()});
+        }
+    }catch(err){
+        console.log(err);
+        res.send({ result: 500, error: err.message });
     }
 });
 
@@ -163,12 +202,24 @@ router.get('/user/:id', idParamValidator, (req, res) => {
  *       '500':
  *          description: Server error
  */
-router.post('/', postValidator, (req, res) => {
-    const errors = validationResult(req)
-    if (errors.isEmpty()) {
-        postController.createPost(req.body, res);
-    } else {
-        res.status(422).json({ errors: errors.array() });
+router.post('/', postValidator, async (req, res) => {
+    try{
+        console.log(req.body);
+        const errors = validationResult(req);
+        if (errors.isEmpty()) {
+            const data = await postController.createPost(req.body);
+            if(!data){
+                res.sendStatus(404);
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        } else {
+            res.status(422).json({errors: errors.array()});
+        }
+    }
+    catch(err){
+        console.log(err);
+        res.send({ result: 500, error: err.message });
     }
 });
 
@@ -214,12 +265,18 @@ router.post('/', postValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.put('/:id', postUpdateValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        postController.updatePost(req.params.id, req.body, res);
+router.put('/:id', postUpdateValidator, async (req, res) => {
+    try{
+        const errors = validationResult(req);
+        if (errors.isEmpty()) {
+            const data = await postController.updatePost(req.params.id, req.body);
+            res.send({ result: 200, data: data });
+        } else {
+            res.status(422).json({errors: errors.array()});
+        }
+    }catch(err){
+        console.log(err);
+        res.send({ result: 500, error: err.message });
     }
 });
 
@@ -248,12 +305,23 @@ router.put('/:id', postUpdateValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.delete('/:id', idParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        postController.deletePost(req.params.id, res);
-    } else {
-        res.status(422).json({ errors: errors.array() });
+router.delete('/:id', idParamValidator, async (req, res) => {
+    try{
+        const errors = validationResult(req);
+        if (errors.isEmpty()) {
+            const data = await postController.deletePost(req.params.id);
+            if(!data){
+                res.sendStatus(404);
+            }
+            else {
+                res.send({ result: 200, data: data });
+            }
+        } else {
+            res.status(422).json({errors: errors.array()});
+        }
+    }catch(err){
+        console.log(err);
+        res.send({ result: 500, error: err.message });
     }
 });
 

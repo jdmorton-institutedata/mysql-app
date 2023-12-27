@@ -60,7 +60,7 @@ router.get("/:id", idParamValidator, async (req, res) => {
   try{
     let data;
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if (errors.isEmpty()) {
       data = await userController.getUser(req.params.id);
       if (!data) {
         res.sendStatus(404);
