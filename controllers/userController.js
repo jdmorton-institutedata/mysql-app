@@ -2,7 +2,7 @@ const User = require("../models/user");
 
 /**
  * 
- * @returns Array<User>
+ * @returns {PromiseArray<User>}
  */
 const getUsers = async () => {
     const data = await User.findAll({});
@@ -33,7 +33,7 @@ const createUser = async (data) => {
  * 
  * @param {number} id - user id
  * @param {User} data - user data
- * @returns {User}
+ * @returns {Promise<User>}
  */
 const updateUser = async (id, data) => {
   const user = await User.update(data, { where: { id: id } });
@@ -43,7 +43,7 @@ const updateUser = async (id, data) => {
 /**
  * 
  * @param {number} id - user id
- * @returns {User}
+ * @returns {Promise<User>}
  */
 const deleteUser = async (id) => {
   const user = await User.destroy({ where: { id: id } });

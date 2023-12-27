@@ -1,136 +1,84 @@
 // comments controller
 const Comment = require('../models/comment');
 
-// finds all comments in DB, then sends array as response
 /**
- * @param {object} res - response object
+ * 
+ * @returns {Promise<Array<Comment>>}
  */
-const getComments = (res) => {
-    Comment.findAll({})
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const getComments = async () => {
+    const data = await Comment.findAll({});
+    return data;
 };
 
-// get single comment
 /**
+ * 
  * @param {number} id - comment id
- * @param {object} res - response object
- */
-const getComment = (id, res) => {
-    Comment.findOne({ where: { id: id } })
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+ * @returns {Promise<Comment>}
+ **/
+const getComment = async (id) => {
+    const data = await Comment.findOne({ where: { id: id } });
+    return data;
 };
 
-// get single comment include all
 /**
+ * 
  * @param {number} id - comment id
- * @param {object} res - response object
+ * @returns {Promise<Comment>}
  */
-const getCommentIncludeAll = (id, res) => {
-    Comment.findOne({ where: { id: id }, include: { all: true } })
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const getCommentIncludeAll = async (id) => {
+    const data = await Comment.findOne({ where: { id: id }, include: { all: true } });
+    return data;
 };
 
-// get comments by post ID
 /**
- * @param {number} id - post id
- * @param {object} res - response object
- */
-const getCommentsByPost = (id, res) => {
-    Comment.findAll({ where: { postId: id } })
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+ * 
+ * @param {int} id
+ * @returns {Promise<Array<Comment>>}
+ * */
+const getCommentsByPost = async (id) => {
+    const data = await Comment.findAll({ where: { postId: id } });
+    return data;
 };
 
-// get comments by user ID
 /**
- * @param {number} id - user id
- * @param {object} res - response object
+ * 
+ * @param {int} id 
+ * @returns {Promise<Array<Comment>>}
  */
-const getCommentsByUser = (id, res) => {
-    Comment.findAll({ where: { userId: id } })
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const getCommentsByUser = async (id) => {
+    const data = await Comment.findAll({ where: { userId: id } });
+    return data;
 };
 
-
-// uses JSON from request body to create new comment in DB
 /**
- * @param {object} data - comment data
- * @param {object} res - response object
+ * 
+ * @param {object} data
+ * @returns {Promise<Comment>}
  */
-const createComment = (data, res) => {
-    Comment.create(data)
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const createComment = async (data) => {
+    const comment = await Comment.create(data);
+    return comment;
 };
 
-// update comment in DB based on ID
 /**
- * @param {number} id - comment id
- * @param {object} data - comment data
- * @param {object} res - response object
+ * 
+ * @param {int} id
+ * @param {object} data
+ * @returns {Promise<Comment>}
  */
-const updateComment = (id, data, res) => {
-    Comment.update(data, { where: { id: id } })
-        .then((data) => {
-            if (!data) {
-                res.send({ result: 404, error: 'Comment not found' });
-            }
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const updateComment = async (id, data) => {
+    const comment = await Comment.update(data, { where: { id: id } });
+    return comment;
 };
 
-// delete comment in DB based on ID
 /**
- * @param {number} id - comment id
- * @param {object} res - response object
+ * 
+ * @param {int} id 
+ * @returns {Promise<Comment>}
  */
-const deleteComment = (id, res) => {
-    Comment.destroy({ where: { id: id } })
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const deleteComment = async (id) => {
+    const comment = await Comment.destroy({ where: { id: id } });
+    return comment;
 };
 
 module.exports = {
