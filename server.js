@@ -4,7 +4,7 @@ require("dotenv").config();
 const db = require("./config/database");
 // create tables
 const models = require("./models");
-await models.init();
+models.init();
 
 const app = require("./app");
 

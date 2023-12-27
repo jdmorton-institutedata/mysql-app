@@ -204,7 +204,7 @@ router.get('/user/:id', idParamValidator, async (req, res) => {
  */
 router.post('/', postValidator, async (req, res) => {
     try{
-        console.log(req.body);
+        // console.log(req.body);
         const errors = validationResult(req);
         if (errors.isEmpty()) {
             const data = await postController.createPost(req.body);

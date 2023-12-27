@@ -3,6 +3,7 @@ const app = require("../../app");
 const userController = require("../../controllers/userController");
 const db = require("../../config/database");
 const models = require("../../models");
+const userRoutes = require("../userRoutes");
 
 let testDb = db;
 
@@ -89,7 +90,7 @@ describe("PUT /api/users/:id", () => {
     };
     const res = await request(app).put(`/api/users/${id}`).send(updatedUser);
     const updatedUser2 = await userController.getUser(id);
-    console.log(res.body);
+    // console.log(res.body);
     expect(res.statusCode).toEqual(200);
     expect(updatedUser.email).toEqual(updatedUser2.dataValues.email);
   });
