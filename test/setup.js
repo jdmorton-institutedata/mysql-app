@@ -30,7 +30,7 @@ module.exports = async function (globalConfig, projectConfig) {
     await db.Sequelize.models.Post.create({
         title: "Test Post 2",
         content: "Test Post Body 2",
-        userId: 2,
+        userId: 1,
     });
 
     await db.Sequelize.models.Comment.create({
@@ -42,8 +42,8 @@ module.exports = async function (globalConfig, projectConfig) {
 
     await db.Sequelize.models.Comment.create({
         content: "Test Comment Body 2",
-        userId: 2,
-        postId: 2,
+        userId: 1,
+        postId: 1,
     });
 
     await db.Sequelize.models.Like.create({
@@ -52,8 +52,8 @@ module.exports = async function (globalConfig, projectConfig) {
     });
 
     await db.Sequelize.models.Like.create({
-        userId: 2,
-        postId: 2,
+        userId: 1,
+        postId: 1,
     });
 
     console.log("Global setup finished - tests starting!");

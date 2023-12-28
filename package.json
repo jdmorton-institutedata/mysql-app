@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development nodemon server.js",
-    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/.bin/jest --coverage --runInBand",
+    "test": "cross-env NODE_ENV=test jest --coverage --runInBand",
     "test-watch": "jest --watchAll --coverage"
   },
   "author": "",
