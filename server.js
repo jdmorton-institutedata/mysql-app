@@ -8,9 +8,6 @@ models.init();
 
 const app = require("./app");
 
-console.log("NODE_ENV: ", process.env.NODE_ENV);
-
-
 // Swagger
 if (process.env.NODE_ENV === 'development') {
   const swaggerUi = require('swagger-ui-express');

@@ -1,10 +1,5 @@
 const request = require('supertest');
-const express = require('express');
 const app = require('../../app');
-const db = require("../../config/database");
-const models = require("../../models");
-
-let testDb = db;
 
 // Import the postRoutes module
 const postRoutes = require('../postRoutes');
@@ -13,13 +8,10 @@ const postRoutes = require('../postRoutes');
 app.use('/api/posts', postRoutes);
 
 beforeAll(async () => {
-  await db.Sequelize.authenticate();
-  await models.init();
   console.log("Post routes tests starting!");
 });
 
 afterAll(async () => {
-  await testDb.Sequelize.close();
   console.log("Post routes tests completed!");
 });
 
@@ -154,10 +146,10 @@ describe('PUT /api/posts/:id', () => {
 });
 
 describe('DELETE /api/posts/:id', () => {
-  // it('should delete a post', async () => {
-  //   const res = await request(app).delete('/api/posts/1');
-  //   expect(res.statusCode).toEqual(200);
-  // });
+  it('should delete a post', async () => {
+    const res = await request(app).delete('/api/posts/2');
+    expect(res.statusCode).toEqual(200);
+  });
   it('should return a 404 if post is not found', async () => {
     const res = await request(app).delete('/api/posts/999');
     expect(res.statusCode).toEqual(404);

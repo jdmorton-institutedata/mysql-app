@@ -1,21 +1,14 @@
 const request = require("supertest");
 const app = require("../../app");
 const commentRoutes = require("../commentRoutes");
-const db = require("../../config/database");
-const models = require("../../models");
 
 app.use("/api/comments", commentRoutes);
 
-let testDb = db;
-
 beforeAll(async () => {
-  await db.Sequelize.authenticate();
-  await models.init();
   console.log("Comment routes tests starting!");
 });
 
 afterAll(async () => {
-  await testDb.Sequelize.close();
   console.log("Comment routes tests completed!");
 });
 
@@ -94,7 +87,7 @@ describe("PUT /api/comments/:id", () => {
   it("should update a comment by ID", async () => {
     const id = 1;
     const comment = {
-      comment: "test comment",
+      content: "test comment",
       userId: 1,
       postId: 1,
     };
@@ -104,7 +97,7 @@ describe("PUT /api/comments/:id", () => {
   it("should return 422 if validation error", async () => {
     const id = 1;
     const comment = {
-      comment: "test comment",
+      content: "test comment",
       userId: 1,
       postId: "invalid",
     };
@@ -115,7 +108,7 @@ describe("PUT /api/comments/:id", () => {
 
 describe("DELETE /api/comments/:id", () => {
   it("should delete a comment by ID", async () => {
-    const id = 1;
+    const id = 2;
     const res = await request(app).delete(`/api/comments/${id}`);
     expect(res.statusCode).toEqual(200);
   });

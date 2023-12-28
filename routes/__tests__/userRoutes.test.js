@@ -1,11 +1,8 @@
 const request = require("supertest");
+const { faker } = require('@faker-js/faker');
 const app = require("../../app");
 const userController = require("../../controllers/userController");
-const db = require("../../config/database");
-const models = require("../../models");
 const userRoutes = require("../userRoutes");
-
-let testDb = db;
 
 // Import the userRoutes module
 const postRoutes = require('../userRoutes');
@@ -14,13 +11,10 @@ const postRoutes = require('../userRoutes');
 app.use('/api/users', userRoutes);
 
 beforeAll(async () => {
-  await db.Sequelize.authenticate();
-  await models.init();
   console.log("User routes tests starting!");
 });
 
 afterAll(async () => {
-  await testDb.Sequelize.close();
   console.log("User routes tests completed!");
 });
 
@@ -61,7 +55,7 @@ describe("POST /api/users", () => {
   it('should create a new user', async () => {
     const user = {
       name: 'John Doe',
-      email: `john@dudes${Date.now()}.com`,
+      email: faker.internet.email(),
       password: 'password'
     };
     const res = await request(app).post('/api/users').send(user);
@@ -85,7 +79,7 @@ describe("PUT /api/users/:id", () => {
     const id = 1; // Replace with a valid user ID
     const updatedUser = {
       name: 'Updated Name',
-      email: 'updated_email@dudes.com',
+      email: faker.internet.email(),
       password: 'updated_password'
     };
     const res = await request(app).put(`/api/users/${id}`).send(updatedUser);
@@ -117,12 +111,11 @@ describe("PUT /api/users/:id", () => {
 });
 
 describe("DELETE /api/users/:id", () => {
-  //     it('should delete a user by ID', async () => {
-  //       const id = 1; // Replace with a valid user ID
-  //       const res = await request(app).delete(`/api/users/${id}`);
-  //       expect(res.statusCode).toEqual(200);
-  //       expect(res.body).toEqual(userController.deleteUser(id));
-  //     });
+      it('should delete a user by ID', async () => {
+        const id = 2; // Replace with a valid user ID
+        const res = await request(app).delete(`/api/users/${id}`);
+        expect(res.statusCode).toEqual(200);
+      });
       it('should return 404 if user not found', async () => {
         const id = 999; // Replace with a non-existent user ID
         const res = await request(app).delete(`/api/users/${id}`);

@@ -12,18 +12,7 @@ const sequelize = new Sequelize(
     dialect: "mysql",
   }
 );
-const connectMysql = async () => {
-  try {
-    console.log(process.env.NODE_ENV);
-    console.log(process.env.DB_NAME);
-    await sequelize.authenticate();
-    console.log(`Successful connection to MySQL Database ${process.env.DB_NAME}`);
-  } catch (error) {
-    console.error("Unable to connect to MySQL database:", error);
-    process.exit(1);
-  }
-};
-connectMysql();
+
 module.exports = {
   Sequelize: sequelize,
 };

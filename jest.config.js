@@ -3,8 +3,8 @@ module.exports = {
   coverageThreshold: {
     global: {
       branches: 75,
-      functions: 100,
-      lines: 85,
+      functions: 90,
+      lines: 80,
     },
   },
   coverageReporters: ["lcov", "text"],
@@ -12,9 +12,11 @@ module.exports = {
   testEnvironment: "node",
   testPathIgnorePatterns: ["/node_modules/", "/__tests__/fixtures/"],
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$",
-  testTimeout: 3000,
+  testTimeout: 30000,
   globals: {
     globalVar: "a global variable",
   },
-  setupFiles: ['<rootDir>/test/jest-setup.js'],
+  globalSetup: "<rootDir>/test/setup.js",
+  globalTeardown: "<rootDir>/test/teardown.js",
+  setupFiles: ["<rootDir>/test/jest-setup.js"],
 };

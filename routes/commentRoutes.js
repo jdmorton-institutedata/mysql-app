@@ -311,7 +311,7 @@ router.put('/:id', commentUpdateValidator, async (req, res) => {
             return res.status(422).send({ errors: errors.array() });
         } else {
             const data = await commentController.updateComment(req.params.id, req.body);
-            if (!data) {
+            if (data[0] === 0) {
                 res.sendStatus(404);
             } else {
                 res.send({ result: 200, data: data });
