@@ -136,3 +136,23 @@ describe("PUT /api/likes/:id", () => {
     });
 });
 
+describe("GET /include/:id", () => {
+    it("should return a like with included user and post info", async () => {
+        const id = 1; // Replace with a valid like ID
+        const res = await request(app).get(`/api/likes/include/${id}`);
+        expect(res.statusCode).toEqual(200);
+        // console.log(res.body);
+        expect(res.body.data.User).toBeTruthy();
+        expect(res.body.data.Post).toBeTruthy();
+    });
+    it("should return 404 if like not found", async () => {
+        const id = 999; // Replace with a non-existent like ID
+        const res = await request(app).get(`/api/likes/include/${id}`);
+        expect(res.statusCode).toEqual(404);
+    });
+    it("should return 422 if validation error", async () => {
+        const id = "invalid"; // Replace with an invalid post ID
+        const res = await request(app).get(`/api/likes/include/${id}`);
+        expect(res.statusCode).toEqual(422);
+    });
+});

@@ -104,11 +104,7 @@ router.get('/post/:id', idParamValidator, async (req, res) => {
             return res.status(422).json({ errors: errors.array() });
         } else {
             const data = await likeController.getLikesByPost(req.params.id);
-            if (!data) {
-                res.status(404).send({ message: 'Like not found' });
-            } else {
-                res.send({ result: 200, data: data });
-            }
+            res.send({ result: 200, data: data });
         }
     }catch (err) {
         res.status(500).send({ message: err.message });
@@ -147,11 +143,7 @@ router.get('/user/:id', idParamValidator, async (req, res) => {
             return res.status(422).json({ errors: errors.array() });
         } else {
             const data = await likeController.getLikesByUser(req.params.id);
-            if (!data) {
-                res.status(404).send({ message: 'Like not found' });
-            } else {
-                res.send({ result: 200, data: data });
-            }
+            res.send({ result: 200, data: data });
         }
     }catch (err) {
         res.status(500).send({ message: err.message });

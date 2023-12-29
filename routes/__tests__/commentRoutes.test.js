@@ -106,6 +106,50 @@ describe("PUT /api/comments/:id", () => {
   });
 });
 
+describe("GET /:id/include", () => {
+  it("should return a comment by ID with all associations", async () => {
+    const id = 1;
+    const res = await request(app).get(`/api/comments/${id}/include`);
+    expect(res.statusCode).toEqual(200);
+  });
+  it("should return 404 if comment not found", async () => {
+    const id = 999;
+    const res = await request(app).get(`/api/comments/${id}/include`);
+    expect(res.statusCode).toEqual(404);
+  });
+  it("should return 422 if validation error", async () => {
+    const id = "invalid";
+    const res = await request(app).get(`/api/comments/${id}/include`);
+    expect(res.statusCode).toEqual(422);
+  });
+});
+
+describe("GET '/post/:id", () => {
+  it("should return all comments by post ID", async () => {
+    const id = 1;
+    const res = await request(app).get(`/api/comments/post/${id}`);
+    expect(res.statusCode).toEqual(200);
+  });
+  it("should return 422 if validation error", async () => {
+    const id = "invalid";
+    const res = await request(app).get(`/api/comments/post/${id}`);
+    expect(res.statusCode).toEqual(422);
+  });
+});
+
+describe("GET '/user/:id", () => {
+  it("should return all comments by user ID", async () => {
+    const id = 1;
+    const res = await request(app).get(`/api/comments/user/${id}`);
+    expect(res.statusCode).toEqual(200);
+  });
+  it("should return 422 if validation error", async () => {
+    const id = "invalid";
+    const res = await request(app).get(`/api/comments/user/${id}`);
+    expect(res.statusCode).toEqual(422);
+  });
+});
+
 describe("DELETE /api/comments/:id", () => {
   it("should delete a comment by ID", async () => {
     const id = 2;

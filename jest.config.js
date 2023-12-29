@@ -12,12 +12,12 @@ module.exports = {
   testEnvironment: "node",
   testPathIgnorePatterns: ["/node_modules/", "/__tests__/fixtures/"],
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$",
-  testTimeout: 30000,
+  testTimeout: 10000,
   globals: {
     globalVar: "a global variable",
   },
   globalSetup: "<rootDir>/test/setup.js",
   globalTeardown: "<rootDir>/test/teardown.js",
   setupFiles: ["<rootDir>/test/jest-setup.js"],
-  // setupFilesAfterEnv: ["<rootDir>/test/jest-after-env.js"],
+  setupFilesAfterEnv: ["<rootDir>/test/jest-after-env.js"],
 };

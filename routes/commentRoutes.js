@@ -23,11 +23,7 @@ const commentController = require('../controllers/commentController');
 router.get('/', async (req, res) => {
     try {
         const data = await commentController.getComments();
-        if (!data) {
-            res.sendStatus(404);
-        } else {
-            res.send({ result: 200, data: data });
-        }
+        res.send({ result: 200, data: data });
     }catch (err) {
         res.status(500).send({ message: err.message });
     }
