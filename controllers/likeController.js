@@ -1,154 +1,79 @@
 const Like = require('../models/like');
 
-// finds all likes in DB, then sends array as response
 /**
- * @param {object} res - response object
+ * 
+ * @returns {Promise<Array<Like>>}
  */
-const getLikes = (res) => {
-    Like.findAll({})
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const getLikes = async () => {
+    const data = await Like.findAll({});
+    return data;
 };
 
-// get single like
 /**
- * @param {number} id - like id
- * @param {object} res - response object
+ * 
+ * @param {int} id 
+ * @returns {Promise<Like>}
  */
-const getLike = (id, res) => {
-    Like.findOne({ where: { id: id } })
-        .then((data) => {
-            if (!data) {
-                res.send({ result: 404, message: "Like not found" });
-            } else {
-                res.send({ result: 200, data: data });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+const getLike = async (id) => {
+    const data = await Like.findOne({ where: { id: id } });
+    return data;
 };
 
-// get single like include all
 /**
- * @param {number} id - like id
- * @param {object} res - response object
+ * 
+ * @param {int} id 
+ * @returns {Promise<Like>}
  */
-const getLikeIncludeAll = (id, res) => {
-    Like.findOne({ where: { id: id }, include: { all: true } })
-        .then((data) => {
-            if (!data) {
-                res.send({ result: 404, message: "Like not found" });
-            } else {
-                res.send({ result: 200, data: data });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+ const getLikeIncludeAll = async (id) => {
+    const data = await Like.findOne({ where: { id: id }, include: { all: true } });
+    return data;
 };
 
-// get likes by post ID
 /**
- * @param {number} id - post id
- * @param {object} res - response object
- */
-const getLikesByPost = (id, res) => {
-    Like.findAll({ where: { postId: id } })
-        .then((data) => {
-            if (!data) {
-                res.send({ result: 404, message: "Post not found" });
-            } else {
-                res.send({ result: 200, data: data });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-
-        });
+ * 
+ * @param {int} id
+ * @returns {Promise<Array<Like>>}
+ * */
+const getLikesByPost = async (id) => {
+    const data = await Like.findAll({ where: { postId: id } });
+    return data;
 };
 
-// get likes by user ID
 /**
- * @param {number} id - user id
- * @param {object} res - response object
- */
-const getLikesByUser = (id, res) => {
-    Like.findAll({ where: { userId: id } })
-        .then((data) => {
-            if (!data) {
-                res.send({ result: 404, message: "User not found" });
-            } else {
-                res.send({ result: 200, data: data });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+ * 
+ * @param {int} id
+ * @returns {Promise<Array<Like>>}
+ * */
+const getLikesByUser = async (id) => {
+    const data = await Like.findAll({ where: { userId: id } });
+    return data;
 };
 
-// uses JSON from request body to create new like in DB
+
+const createLike = async (data) => {
+    const like = await Like.create(data);
+    return like;
+};
+
 /**
+ * 
+ * @param {int} id - like id
  * @param {object} data - like data
- * @param {object} res - response object
- */
-const createLike = (data, res) => {
-    Like.create(data)
-        .then((data) => {
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+ * @returns {Promise<Like>}
+ * */
+const updateLike = async (id, data) => {
+    const like = await Like.update(data, { where: { id: id } });
+    return like;
 };
 
-// update like in DB based on ID
 /**
- * @param {number} id - like id
- * @param {object} data - like data
- * @param {object} res - response object
- */
-const updateLike = (id, data, res) => {
-    Like.update(data, { where: { id: id } })
-        .then((data) => {
-            if (!data) {
-                res.send({ result: 404, message: "Like not found" });
-            }
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
-};
-
-// delete like in DB based on ID
-/**
- * @param {number} id - like id
- * @param {object} res - response object
- */
-const deleteLike = (id, res) => {
-    Like.destroy({ where: { id: id } })
-        .then((data) => {
-            if (!data) {
-                res.send({ result: 404, message: "Like not found" });
-            }
-            res.send({ result: 200, data: data });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
-        });
+ * 
+ * @param {int} id - like id
+ * @returns {Promise<Like>}
+ * */
+const deleteLike = async (id) => {
+    const like = await Like.destroy({ where: { id: id } });
+    return like;
 };
 
 module.exports = {

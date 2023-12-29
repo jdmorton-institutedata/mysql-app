@@ -15,14 +15,8 @@ const userValidator = [
     body('email', 'Invalid email').isEmail(),
     body('password', 'The minimum password length is 6 characters').isLength({min: 6, max: 50}),
   ];
-  
-  const userParamValidator = [
-    param('id', 'id is required').not().isEmpty(),
-    param('id', 'id should be a number').isNumeric(),
-  ];
 
   module.exports = {
     userValidator,
-    userUpdateValidator,
-    userParamValidator
+    userUpdateValidator
   }

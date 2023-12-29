@@ -16,13 +16,7 @@ const postValidator = [
     body('content', 'content is required').not().isEmpty(),
   ];
 
-  const postParamValidator = [
-    param('id', 'Post id is required').not().isEmpty(),
-    param('id', 'Post id should be numeric').isNumeric(),
-  ];
-
   module.exports = {
     postValidator,
-    postUpdateValidator,
-    postParamValidator
+    postUpdateValidator
   }

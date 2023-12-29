@@ -1,6 +1,7 @@
 const express = require('express');
 const {validationResult} = require('express-validator');
-const { likeValidator, likeUpdateValidator, likeParamValidator } = require("../validators/likeValidator");
+const { likeValidator, likeUpdateValidator } = require("../validators/likeValidator");
+const { idParamValidator } = require("../validators/index");
 const router = express.Router();
 const likeController = require('../controllers/likeController');
 
@@ -19,7 +20,14 @@ const likeController = require('../controllers/likeController');
  *      '500':
  *          description: Server error
  */
-router.get('/', (req, res) => likeController.getLikes(res));
+router.get('/', async (req, res) => {
+    try {
+        const data = await likeController.getLikes();
+        res.send({ result: 200, data: data });
+    }catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+});
 
 /**
  * @swagger
@@ -46,12 +54,21 @@ router.get('/', (req, res) => likeController.getLikes(res));
  *      '500':
  *          description: Server error
  */
-router.get('/:id', likeParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        likeController.getLike(req.params.id, res);
+router.get('/:id', idParamValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        } else {
+            const data = await likeController.getLike(req.params.id);
+            if (!data) {
+                res.status(404).send({ message: 'Like not found' });
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -80,12 +97,17 @@ router.get('/:id', likeParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/post/:id', likeParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        likeController.getLikesByPost(req.params.id, res);
+router.get('/post/:id', idParamValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        } else {
+            const data = await likeController.getLikesByPost(req.params.id);
+            res.send({ result: 200, data: data });
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -114,12 +136,17 @@ router.get('/post/:id', likeParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/user/:id', likeParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        likeController.getLikesByUser(req.params.id, res);
+router.get('/user/:id', idParamValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        } else {
+            const data = await likeController.getLikesByUser(req.params.id);
+            res.send({ result: 200, data: data });
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -154,12 +181,17 @@ router.get('/user/:id', likeParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.post('/', likeValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    } else {
-        likeController.createLike(req.body, res);
+router.post('/', likeValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            const data = await likeController.createLike(req.body);
+            res.status(201).send({ result: 201, data: data });
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -188,12 +220,21 @@ router.post('/', likeValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id', likeParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        likeController.getLike(req.params.id, res);
+router.get('/:id', idParamValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        } else {
+            const data = await likeController.getLike(req.params.id);
+            if (!data) {
+                res.status(404).send({ message: 'Like not found' });
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -223,12 +264,21 @@ router.get('/:id', likeParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/include/:id', likeParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    } else {
-        likeController.getLikeIncludeAll(req.params.id, res);
+router.get('/include/:id', idParamValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        } else {
+            const data = await likeController.getLikeIncludeAll(req.params.id);
+            if (!data) {
+                res.status(404).send({ message: 'Like not found' });
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -274,12 +324,21 @@ router.get('/include/:id', likeParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.put('/:id', likeUpdateValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    } else {
-        likeController.updateLike(req.params.id, req.body, res);
+router.put('/:id', likeUpdateValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            const data = await likeController.updateLike(req.params.id, req.body);
+            if (data[0] === 0) {
+                res.status(404).send({ message: 'Like not found' });
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -308,12 +367,21 @@ router.put('/:id', likeUpdateValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.delete('/:id', likeParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    } else {
-        likeController.deleteLike(req.params.id, res);
+router.delete('/:id', idParamValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            const data = await likeController.deleteLike(req.params.id);
+            if (!data) {
+                res.status(404).send({ message: 'Like not found' });
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 

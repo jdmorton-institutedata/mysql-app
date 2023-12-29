@@ -75,8 +75,6 @@ async function init() {
   await Like.sync();
 }
 
-init();
-
 module.exports = {
-  User, Post, Comment, Like
+  init,
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const {validationResult} = require('express-validator');
-const { commentValidator, commentUpdateValidator, commentParamValidator } = require("../validators/commentValidator");
+const { commentValidator, commentUpdateValidator } = require("../validators/commentValidator");
+const { idParamValidator } = require("../validators/index");
 const router = express.Router();
 const commentController = require('../controllers/commentController');
 
@@ -19,9 +20,13 @@ const commentController = require('../controllers/commentController');
  *      '500':
  *          description: Server error
  */
-router.get('/', (req, res) => {
-    // Logic to fetch all comments using commentController
-    commentController.getComments(res);
+router.get('/', async (req, res) => {
+    try {
+        const data = await commentController.getComments();
+        res.send({ result: 200, data: data });
+    }catch (err) {
+        res.status(500).send({ message: err.message });
+    }
 });
 
 /**
@@ -49,16 +54,25 @@ router.get('/', (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id', commentParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    } else {
-        commentController.getComment(req.params.id, res);
+router.get('/:id', idParamValidator, async (req, res) => {
+    try {
+        let data;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            data = await commentController.getComment(req.params.id);
+            if (!data) {
+                res.sendStatus(404);
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
-// get single comment include all
 /**
  * @swagger
  * /api/comments/{id}/include:
@@ -84,12 +98,22 @@ router.get('/:id', commentParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/:id/include', commentParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    } else {
-        commentController.getCommentIncludeAll(req.params.id, res);
+router.get('/:id/include', idParamValidator, async (req, res) => {
+    try {
+        let data;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            data = await commentController.getCommentIncludeAll(req.params.id);
+            if (!data) {
+                res.sendStatus(404);
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }   
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -127,13 +151,20 @@ router.get('/:id/include', commentParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.post('/', commentValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    } else  {
-        commentController.createComment(req.body, res);
-    }
+router.post('/', commentValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            console.log(req.body);          
+            const data = await commentController.createComment(req.body);
+            res.send({ result: 200, data: data });
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
+    }  
+    
 });
 
 // get comments by post id
@@ -162,12 +193,22 @@ router.post('/', commentValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/post/:id', commentParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    } else {
-        commentController.getCommentsByPostId(req.params.id, res);
+router.get('/post/:id', idParamValidator, async (req, res) => {
+    try {
+        let data;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            data = await commentController.getCommentsByPost(req.params.id);
+            if (!data) {
+                res.sendStatus(404);
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -196,12 +237,22 @@ router.get('/post/:id', commentParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.get('/user/:id', commentParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    } else {
-        commentController.getCommentsByUserId(req.params.id, res);
+router.get('/user/:id', idParamValidator, async (req, res) => {
+    try {
+        let data;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            data = await commentController.getCommentsByUser(req.params.id);
+            if (!data) {
+                res.sendStatus(404);
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -249,12 +300,22 @@ router.get('/user/:id', commentParamValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.put('/:id', commentUpdateValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    }
-    commentController.updateComment(req.params.id, req.body, res);
+router.put('/:id', commentUpdateValidator, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            const data = await commentController.updateComment(req.params.id, req.body);
+            if (data[0] === 0) {
+                res.sendStatus(404);
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
+    }  
 });
 
 /**
@@ -282,12 +343,22 @@ router.put('/:id', commentUpdateValidator, (req, res) => {
  *      '500':
  *          description: Server error
  */
-router.delete('/:id', commentParamValidator, (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).send({ errors: errors.array() });
-    } else {
-        commentController.deleteComment(req.params.id, res);
+router.delete('/:id', idParamValidator, async (req, res) => {
+    try {
+        let data;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).send({ errors: errors.array() });
+        } else {
+            data = await commentController.deleteComment(req.params.id);
+            if (!data) {
+                res.sendStatus(404);
+            } else {
+                res.send({ result: 200, data: data });
+            }
+        }
+    }catch (err) {
+        res.status(500).send({ message: err.message });
     }
 });
 

@@ -7,6 +7,10 @@ const Post = db.Sequelize.define('Post', {
         primaryKey: true,
         autoIncrement: true,
     },
+    userId : {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     title: {
         type: DataTypes.STRING,
         allowNull: false
