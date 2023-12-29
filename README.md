@@ -10,3 +10,6 @@
 [How to add Unit Testing to Express using Jest](https://fek.io/blog/how-to-add-unit-testing-to-express-using-jest/)  
 [Testing Express with Jest and SuperTest](https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/)  
 []
+
+# Databases
+You'll need two ... blogsdb and blogsdb_test
