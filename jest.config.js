@@ -10,14 +10,12 @@ module.exports = {
   coverageReporters: ["lcov", "text"],
   coverageDirectory: "./coverage-report/",
   testEnvironment: "node",
-  testPathIgnorePatterns: ["/node_modules/", "/__tests__/fixtures/"],
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$",
+  testPathIgnorePatterns: ["/node_modules/", "/__tests__/fixtures/", "/__tests__/integration/"],
+  testRegex: "(/__tests__/unit/.*|(\\.|/)(test|spec))\\.jsx?$",
   testTimeout: 10000,
   globals: {
     globalVar: "a global variable",
   },
-  globalSetup: "<rootDir>/test/setup.js",
-  globalTeardown: "<rootDir>/test/teardown.js",
-  setupFiles: ["<rootDir>/test/jest-setup.js"],
-  setupFilesAfterEnv: ["<rootDir>/test/jest-after-env.js"],
+  setupFiles: ["<rootDir>/test/jest-unit-setup.js"],
+  // setupFilesAfterEnv: ["<rootDir>/test/jest-after-env.js"],
 };

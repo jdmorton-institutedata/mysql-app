@@ -1,7 +1,7 @@
 const request = require("supertest");
-const app = require("../../app");
-const likeController = require("../../controllers/likeController");
-const likeRoutes = require("../likeRoutes");
+const app = require("../../../app");
+const likeController = require("../../../controllers/likeController");
+const likeRoutes = require("../../likeRoutes");
 
 // Add the postRoutes middleware to the app
 app.use('/api/likes', likeRoutes);
