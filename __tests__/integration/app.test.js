@@ -1,18 +1,12 @@
 const request = require('supertest');
-const app = require('../app');
-const db = require('../config/database');
+const app = require('../../app');
 
-let testDb = db;
-
-beforeAll(async () => {
-  await db.Sequelize.authenticate();
-  await db.Sequelize.sync();
-  console.log('Jest starting!');
+beforeAll(() => {
+  console.log('App test starting!');
 });
 
-afterAll(async () => {
-  await testDb.Sequelize.close();
-  console.log('Jest completed!');
+afterAll(() => {
+  console.log('App test completed!');
 });
 
 describe('GET /', () => {

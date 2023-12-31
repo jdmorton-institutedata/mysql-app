@@ -1,6 +1,6 @@
 const request = require("supertest");
-const app = require("../../app");
-const commentRoutes = require("../commentRoutes");
+const app = require("../../../app");
+const commentRoutes = require("../../commentRoutes");
 
 app.use("/api/comments", commentRoutes);
 

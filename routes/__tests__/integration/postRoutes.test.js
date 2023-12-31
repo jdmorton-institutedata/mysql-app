@@ -1,8 +1,8 @@
 const request = require('supertest');
-const app = require('../../app');
+const app = require('../../../app');
 
 // Import the postRoutes module
-const postRoutes = require('../postRoutes');
+const postRoutes = require('../../postRoutes');
 
 // Add the postRoutes middleware to the app
 app.use('/api/posts', postRoutes);
