@@ -1,6 +1,6 @@
 # mysql_blog
 
-[Swagger implementation based on](https://dev.to/kabartolo/how-to-document-an-express-api-with-swagger-ui-and-jsdoc-50do)  
+[Swagger implementation](https://dev.to/kabartolo/how-to-document-an-express-api-with-swagger-ui-and-jsdoc-50do)  
 
 [CORS](https://expressjs.com/en/resources/middleware/cors.html)  
 
@@ -13,3 +13,12 @@
 
 # Databases
 You'll need two ... blogsdb and blogsdb_test
+
+# Development Order
+
+1. Swagger
+2. Middleware
+3. testing
+4. unit-testing
+5. logging-exception-handlling
+

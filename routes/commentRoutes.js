@@ -157,7 +157,7 @@ router.post('/', commentValidator, async (req, res) => {
         if (!errors.isEmpty()) {
             return res.status(422).send({ errors: errors.array() });
         } else {
-            console.log(req.body);          
+            // console.log(req.body);          
             const data = await commentController.createComment(req.body);
             res.send({ result: 200, data: data });
         }
