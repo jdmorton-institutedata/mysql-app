@@ -1,6 +1,6 @@
 # mysql_blog
 
-[Swagger implementation based on](https://dev.to/kabartolo/how-to-document-an-express-api-with-swagger-ui-and-jsdoc-50do)  
+[Swagger implementation](https://dev.to/kabartolo/how-to-document-an-express-api-with-swagger-ui-and-jsdoc-50do)  
 
 [CORS](https://expressjs.com/en/resources/middleware/cors.html)  
 
@@ -9,7 +9,16 @@
 
 [How to add Unit Testing to Express using Jest](https://fek.io/blog/how-to-add-unit-testing-to-express-using-jest/)  
 [Testing Express with Jest and SuperTest](https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/)  
-[]
+[Logging with winston and morgan](https://betterstack.com/community/guides/logging/how-to-install-setup-and-use-winston-and-morgan-to-log-node-js-applications/)  
 
 # Databases
 You'll need two ... blogsdb and blogsdb_test
+
+# Development Order
+
+1. Swagger
+2. Middleware
+3. testing
+4. unit-testing
+5. logging-exception-handlling
+

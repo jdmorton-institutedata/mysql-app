@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
         const data = await commentController.getComments();
         res.send({ result: 200, data: data });
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -69,7 +69,7 @@ router.get('/:id', idParamValidator, async (req, res) => {
             }
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -113,7 +113,7 @@ router.get('/:id/include', idParamValidator, async (req, res) => {
             }
         }   
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -145,11 +145,13 @@ router.get('/:id/include', idParamValidator, async (req, res) => {
  *            example: This is a comment 
  *    responses:
  *      '200':
- *          description: A successful response
+ *         description: A successful response
+ *      '400':
+ *         description: Invalid JSON
  *      '422':
  *         description: Invalid input
  *      '500':
- *          description: Server error
+ *         description: Server error
  */
 router.post('/', commentValidator, async (req, res) => {
     try {
@@ -157,12 +159,12 @@ router.post('/', commentValidator, async (req, res) => {
         if (!errors.isEmpty()) {
             return res.status(422).send({ errors: errors.array() });
         } else {
-            console.log(req.body);          
+            // console.log(req.body);          
             const data = await commentController.createComment(req.body);
             res.send({ result: 200, data: data });
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }  
     
 });
@@ -208,7 +210,7 @@ router.get('/post/:id', idParamValidator, async (req, res) => {
             }
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -252,7 +254,7 @@ router.get('/user/:id', idParamValidator, async (req, res) => {
             }
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -293,6 +295,8 @@ router.get('/user/:id', idParamValidator, async (req, res) => {
  *    responses:
  *      '200':
  *          description: A successful response
+ *      '400':
+ *          description: Invalid JSON
  *      '404':
  *          description: Comment not found
  *      '422':
@@ -314,7 +318,7 @@ router.put('/:id', commentUpdateValidator, async (req, res) => {
             }
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }  
 });
 
@@ -358,7 +362,7 @@ router.delete('/:id', idParamValidator, async (req, res) => {
             }
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 

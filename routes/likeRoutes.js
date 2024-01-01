@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
         const data = await likeController.getLikes();
         res.send({ result: 200, data: data });
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -68,7 +68,7 @@ router.get('/:id', idParamValidator, async (req, res) => {
             }
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -107,7 +107,7 @@ router.get('/post/:id', idParamValidator, async (req, res) => {
             res.send({ result: 200, data: data });
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -146,7 +146,7 @@ router.get('/user/:id', idParamValidator, async (req, res) => {
             res.send({ result: 200, data: data });
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -175,9 +175,9 @@ router.get('/user/:id', idParamValidator, async (req, res) => {
  *      '201':
  *          description: Like created successfully
  *      '400':
- *          description: Bad request
+ *          description: Invalid JSON
  *      '422':
- *        description: Validation error
+ *          description: Validation error
  *      '500':
  *          description: Server error
  */
@@ -191,7 +191,7 @@ router.post('/', likeValidator, async (req, res) => {
             res.status(201).send({ result: 201, data: data });
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -235,7 +235,7 @@ router.get('/include/:id', idParamValidator, async (req, res) => {
             }
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -273,7 +273,7 @@ router.get('/include/:id', idParamValidator, async (req, res) => {
  *      '200':
  *          description: Like updated successfully
  *      '400':
- *          description: Bad request
+ *          description: Invalid JSON
  *      '404':
  *          description: Like not found
  *      '422':
@@ -295,7 +295,7 @@ router.put('/:id', likeUpdateValidator, async (req, res) => {
             }
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
@@ -338,7 +338,7 @@ router.delete('/:id', idParamValidator, async (req, res) => {
             }
         }
     }catch (err) {
-        res.status(500).send({ message: err.message });
+        next(err);
     }
 });
 
