@@ -26,8 +26,7 @@ router.get("/", async (req, res) => {
     res.send({ result: 200, data: data });
   }
   catch(err){
-    console.log(err);
-    res.send({ result: 500, error: err.message });
+    next(err);
   }
 });
 
@@ -72,8 +71,7 @@ router.get("/:id", idParamValidator, async (req, res) => {
     }
   }
   catch(err){
-    console.log(err);
-    res.send({ result: 500, error: err.message });
+    next(err);
   }
 });
 
@@ -106,6 +104,8 @@ router.get("/:id", idParamValidator, async (req, res) => {
  *    responses:
  *      '200':
  *        description: A successful response
+ *      '400':
+ *        description: Invalid JSON
  *      '404':
  *        description: User not found
  *      '422':
@@ -124,8 +124,7 @@ router.post("/", userValidator, async (req, res) => {
     }
   }
   catch(err){
-    console.log(err);
-    res.send({ result: 500, error: err.message });
+    next(err);
   }
 });
 
@@ -168,6 +167,8 @@ router.post("/", userValidator, async (req, res) => {
  *        description: A successful response
  *      '404':
  *        description: User not found
+ *      '400':
+ *        description: Invalid JSON
  *      '422':
  *        description: Validation error
  *      '500':
@@ -188,8 +189,7 @@ router.put("/:id", userUpdateValidator, async (req, res) => {
     }
   }
   catch(err){
-    console.log(err);
-    res.send({ result: 500, error: err.message });
+    next(err);
   }
 });
 
@@ -233,8 +233,7 @@ router.delete("/:id", idParamValidator, async (req, res) => {
     }
   }
   catch(err){
-    console.log(err);
-    res.send({ result: 500, error: err.message });
+    next(err);
   }
 });
 
